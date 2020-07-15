@@ -1,0 +1,17 @@
+.content{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: whitesmoke;
+    padding: 20px;
+    width: 100%;
+}
+#display{
+    width: 100%;
+}
+#numberbox{
+    width: 10%;
+}
+#length{
+    display: inline-block;
+    width: 100px;
+}
