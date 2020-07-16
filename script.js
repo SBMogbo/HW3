@@ -1,83 +1,57 @@
+// function to password gen
+function generate() {
 
-// Dom elements
-var resultEl = document.getElementById('result')
-var lengthEl = document.getElementById('length');
-var upperCaseEl = document.getElementById('UpperCase');
-var lowerCaseEl = document.getElementById('LowerCase');
-var numbersEl = document.getElementById('numbers');
-var symbolsEl = document.getElementById('symbols');
-var generateEl = document.getElementById('generate');
-var clipboardEl = document.getElementById('clipboard');
+    let password = "";
+    
+    let length = +document.getElementById("length").value;
+    // check values
+    let lowerCase = document.getElementById("lowercase").checked;
+    let upperCase = document.getElementById("uppercase").checked;
+    let symbol = document.getElementById("symbols").checked;
+    let number = document.getElementById("numbers").checked;
+ 
 
+    if (lowerCase + upperCase + symbol + number <= 0)
+        return;
+// loop for random order
+    for (let i = 0; i < length; i++) {
 
-const randomFunc = {
+        const x = generater(0, 3);
+        if (lowerCase && x === 0) {
+            password += generateRandomLowerCase();
+        } else if (upperCase && x === 1) {
+            password += generateRandomUpperCase();
+        } else if (symbol && x === 2) {
+            password += generateRandomSymbol();
+        } else if (number && x === 3) {
+            password += generater(0, 9);
+        } else {
+            i--;
+        }
 
-    //upper : getRandomUpper,
-    //lower : getRandomLower,
-    //number : getRandomNumber,
-    //symbol : getRandomSymbol
-};
+    }
 
-// event listen
-generateEl.addEventListener("click", () => {
-    const length = +lengthEl.value;
-    const hasLower = lowerCaseEl.checked;
-    const hasUpper = upperCaseEl.checked;
-    const hasNumber = numbersEl.checked;
-    const hasSymbol = symbolsEl.checked;
-
-    resultEl.innerText = generatePassword(hasUpper, hasLower, hasNumber, hasSymbol, length);
-});
-
-
-
-//Generate password fun 
-function generatePassword(lower, upper, number, symbol, length){
-var generatePassword= "";
-
-var typesCount = lower + upper + number + symbol
-
-
-console.log("typesCount", typesCount)
-;
-
-var typesArr = [lower + upper + number + symbol];
-
-
-console.log("typesArr", typesArr);
-
-if(typesCount === 0) {
-    return '';
-}
-
-for(let i=0; i<length; i+=typesCount) {
-    typesArr.forEach(type => {
-        const funcName = Object.keys(type)[0];
-        generatedPassword += randomFunc[funcName]();
-    });
-}
-
-const finalPassword = generatedPassword.slice(0, length);
-
-
-return finalPassword;
-}
-
-//Generator Functions http://www.net-comber.com/charset.html
-
-function getRandomLower() {
-    return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+    document.getElementById("result").textContent = password;
 
 }
-function getRandomUpper() {
-    return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+// need to a refresh
+generate(generate.onclick);
 
+// lower case function 
+function generateRandomLowerCase() {
+    return String.fromCharCode(generater(97, 122));
 }
-function getRandomNumber() {
-    return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
-
-} function getRandomSymbol() {
-    var symbols = "\"#$%&'()*+,-./:;<=>?@[]^_{|}~";
-    return symbols[Math.floor(Math.random() * symbols.length)];
-
+// upper case function 
+function generateRandomUpperCase() {
+    return String.fromCharCode(generater(65, 90));
 }
+//symbol function
+function generateRandomSymbol() {
+    const symbols = "~*$%@#^&!?*'-=/,.{}()[]<>";
+    return symbols[generater(0, symbols.length - 1)];
+}
+// number function 
+function generater(min = 0, max = 1) {
+    return Math.floor(Math.random() * (max + 1 - min) + min);
+} 
+
